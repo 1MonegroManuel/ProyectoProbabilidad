@@ -15,7 +15,9 @@ const estado = {
   enJuego: false,
   grupos: [],
   mazoElement: null,
-  ultimaCartaSacada: null
+  ultimaCartaSacada: null,
+  animacionesEnCurso: [],
+  timeoutIds: []
 };
 
 // Cache de elementos DOM
@@ -182,6 +184,7 @@ function actualizarUI() {
 
 // Actualizar cartas en mesa
 function actualizarCartas() {
+  limpiarAnimaciones();
   const palosSeleccionados = Array.from(
     document.querySelectorAll('input[name="palo"]:checked'), 
     cb => cb.value
@@ -207,9 +210,19 @@ function actualizarCartas() {
   mostrarCartasEnMesa();
   elementos.cartasRestantes.textContent = estado.cartasEnMesa.length;
 }
-
+// Nueva función para limpiar animaciones
+function limpiarAnimaciones() {
+  // Limpiar todos los timeouts pendientes
+  estado.timeoutIds.forEach(id => clearTimeout(id));
+  estado.timeoutIds = [];
+  
+  // Limpiar animaciones en curso
+  estado.animacionesEnCurso = [];
+  elementos.cartasContainer.innerHTML = '';
+}
 // Mostrar cartas en mesa con animación
 function mostrarCartasEnMesa() {
+  limpiarAnimaciones();
   elementos.cartasContainer.innerHTML = '';
   
   const palosSeleccionados = Array.from(
@@ -219,7 +232,8 @@ function mostrarCartasEnMesa() {
   const totalPalos = palosSeleccionados.length;
 
   estado.cartasEnMesa.forEach((carta, index) => {
-    setTimeout(() => {
+    // Guardar el timeoutId correctamente
+    const timeoutId = setTimeout(() => {
       const paloIndex = palosSeleccionados.indexOf(carta.palo);
       const cartaIndex = VALORES.indexOf(carta.valor);
       
@@ -250,10 +264,13 @@ function mostrarCartasEnMesa() {
       `;
       
       elementos.cartasContainer.appendChild(cartaElement);
+      estado.animacionesEnCurso.push(cartaElement);
       
       void cartaElement.offsetWidth; // Forzar reflow
       cartaElement.style.opacity = '1';
     }, index * 100);
+    
+    estado.timeoutIds.push(timeoutId); // Ahora timeoutId está definido
   });
 }
 
