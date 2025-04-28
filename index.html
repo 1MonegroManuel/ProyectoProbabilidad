@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Juego de Bingo de Probabilidades con cartas">
+  <title>Bingo de Probabilidades 🃏</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header aria-labelledby="titulo-principal">
+    <div class="slider" id="slider" aria-hidden="true"></div>
+    <h1 id="titulo-principal">Bingo de Probabilidades 🃏</h1>
+  </header>
+
+  <main>
+    <section class="filtro-container" aria-labelledby="titulo-filtro">
+      <h2 id="titulo-filtro">Selecciona los palos:</h2>
+      <div class="palos-options" role="group">
+        <label class="palo-option rojo">
+          <input type="checkbox" name="palo" value="♥" aria-label="Corazones">
+          <span class="checkmark" role="checkbox" aria-checked="false"></span>
+          <span class="palo-text">Corazones ♥</span>
+        </label>
+        <label class="palo-option negro">
+          <input type="checkbox" name="palo" value="♣" aria-label="Tréboles">
+          <span class="checkmark" role="checkbox" aria-checked="false"></span>
+          <span class="palo-text">Tréboles ♣</span>
+        </label>
+        <label class="palo-option rojo">
+          <input type="checkbox" name="palo" value="♦" aria-label="Diamantes">
+          <span class="checkmark" role="checkbox" aria-checked="false"></span>
+          <span class="palo-text">Diamantes ♦</span>
+        </label>
+        <label class="palo-option negro">
+          <input type="checkbox" name="palo" value="♠" aria-label="Picas">
+          <span class="checkmark" role="checkbox" aria-checked="false"></span>
+          <span class="palo-text">Picas ♠</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="mesa-container" aria-label="Área de juego">
+      <div class="mesa">
+        <div class="cartas-container" id="cartasContainer" role="region" aria-live="polite"></div>
+        <div class="mesa-frente" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <div class="controles">
+      <button class="btn-play" id="btnPlay" aria-label="Barajear y comenzar juego">Barajear y Jugar 🎲</button>
+    </div>
+
+    <section class="zona-seleccionadas" aria-labelledby="titulo-cartas-sacadas">
+      <h3 id="titulo-cartas-sacadas" class="titulo-seccion">Cartas Sacadas</h3>
+      <div class="contador-cartas" id="contadorCartas" aria-live="polite">0</div>
+      <div class="cartas-salidas-container" id="cartasSalidas" role="list"></div>
+    </section>
+
+    <section class="contenedor-principal">
+      <article class="grupo-container" aria-labelledby="titulo-grupos">
+        <h3 id="titulo-grupos">Crear Grupos y Apostar</h3>
+        <form id="grupoForm">
+          <div class="form-group">
+            <label for="nombreGrupo">Nombre del Grupo:</label>
+            <input type="text" id="nombreGrupo" required aria-required="true">
+          </div>
+          <div class="form-group">
+            <label for="puntosGrupo">Puntos Iniciales:</label>
+            <input type="number" id="puntosGrupo" min="1" required aria-required="true">
+          </div>
+          <button type="submit">Crear Grupo</button>
+        </form>
+        <div id="gruposList" role="list"></div>
+      </article>
+    
+      <article class="apuesta-container" aria-labelledby="titulo-apuestas">
+        <h3 id="titulo-apuestas">Realizar Apuesta</h3>
+        <form id="apuestaForm">
+          <div class="form-group">
+            <label for="grupoSeleccionado">Grupo:</label>
+            <select id="grupoSeleccionado" required aria-required="true">
+              <option value="" disabled selected>Selecciona un Grupo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tipoApuesta">Tipo de Apuesta:</label>
+            <select id="tipoApuesta" required aria-required="true">
+              <option value="" disabled selected>Selecciona una Apuesta</option>
+              <option value="mayor">Mayor</option>
+              <option value="menor">Menor</option>
+              <option value="colorRojo">Color Rojo</option>
+              <option value="colorNegro">Color Negro</option>
+              <option value="paloCorazones">Palo Corazones</option>
+              <option value="paloTreboles">Palo Tréboles</option>
+              <option value="paloDiamantes">Palo Diamantes</option>
+              <option value="paloPicas">Palo Picas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="puntosApuesta">Puntos a Apostar:</label>
+            <input type="number" id="puntosApuesta" min="1" required aria-required="true">
+          </div>
+          <button type="submit">Apostar</button>
+        </form>
+        <div id="apuestasList" role="list"></div>
+      </article>
+    </section>
+
+    <section class="pregunta-container" id="preguntaContainer" aria-live="polite" hidden>
+      <div class="pregunta-texto">Haz clic en el mazo para sacar una carta</div>
+      <div class="probabilidad-texto" id="probabilidadTexto"></div>
+      <div class="instrucciones">Cartas restantes: <span id="cartasRestantes">0</span></div>
+    </section>
+  </main>
+
+  <!-- Modal para resultados -->
+  <div id="modalResultados" class="modal">
+    <div class="modal-contenido">
+      <span id="cerrarModal" class="cerrar-modal">&times;</span>
+      <div id="modalContenido"></div>
+    </div>
+  </div>
+  <script src="scripts.js" defer></script>
+</body>
+</html>
